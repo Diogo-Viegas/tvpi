@@ -1,35 +1,153 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background: #111;
-    color: #eee;
+    background: #0b0b0f;
+    color: #f5f5f5;
     margin: 0;
-    padding: 20px;
 }
 
 main {
-    max-width: 700px;
+    max-width: 1100px;
     margin: auto;
+    padding: 24px;
+}
+
+h1 {
+    color: #e50914;
+    font-size: 42px;
+}
+
+h2, h3 {
+    margin-top: 24px;
 }
 
 a {
-    color: #7dd3fc;
+    color: inherit;
+    text-decoration: none;
 }
 
-input, select, button {
-    display: block;
-    width: 100%;
-    margin: 8px 0 16px;
-    padding: 10px;
-    font-size: 16px;
-}
-
-button {
-    background: #22c55e;
-    color: #000;
+.btn, button {
+    background: #e50914;
+    color: white;
     border: none;
+    border-radius: 6px;
+    padding: 10px 14px;
     cursor: pointer;
+    font-weight: bold;
 }
 
-li {
-    margin: 12px 0;
+.btn.secondary {
+    background: #333;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 18px;
+    border-radius: 6px;
+    border: 1px solid #333;
+    background: #181818;
+    color: white;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 18px;
+}
+
+.card {
+    background: #181818;
+    border-radius: 12px;
+    padding: 18px;
+    min-height: 140px;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.card:hover {
+    transform: scale(1.03);
+    background: #242424;
+}
+
+.badge {
+    display: inline-block;
+    background: #333;
+    padding: 5px 8px;
+    border-radius: 999px;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+.rating {
+    color: #facc15;
+    margin-top: 10px;
+}
+
+.progress-wrap {
+    background: #333;
+    border-radius: 999px;
+    overflow: hidden;
+    height: 12px;
+    margin: 10px 0 20px;
+}
+
+.progress-bar {
+    background: #e50914;
+    height: 100%;
+}
+
+.episode {
+    background: #181818;
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.inline-form {
+    display: inline;
+}
+
+.danger {
+    background: #7f1d1d;
+}
+
+.poster-card {
+    padding: 0;
+    overflow: hidden;
+    min-height: 300px;
+}
+
+.poster-card img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    display: block;
+}
+
+.poster-placeholder {
+    height: 260px;
+    background: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+}
+
+.card-content {
+    padding: 14px;
+}
+.detail-poster {
+    width: 220px;
+    max-width: 100%;
+    border-radius: 12px;
+    margin: 16px 0;
+}
+
+.overview {
+    max-width: 700px;
+    line-height: 1.6;
+    color: #d4d4d4;
 }

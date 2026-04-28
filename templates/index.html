@@ -1,24 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-<a href="/add">+ Adicionar série</a>
+<a class="btn" href="/add">+ Adicionar série</a>
 
 <h2>As minhas séries</h2>
 
 {% if series %}
-    <ul>
+    <div class="grid">
         {% for show in series %}
-    <li>
-        <a href="/series/{{ show['id'] }}">
-            <strong>{{ show["title"] }}</strong>
+        <a class="card poster-card" href="/series/{{ show['id'] }}">
+            {% if show["poster_url"] %}
+                <img src="{{ show['poster_url'] }}" alt="{{ show['title'] }}">
+            {% else %}
+                <div class="poster-placeholder">📺</div>
+            {% endif %}
+
+            <div class="card-content">
+                <h3>{{ show["title"] }}</h3>
+                <span class="badge">{{ show["status"] }}</span>
+
+                {% if show["rating"] %}
+                    <div class="rating">⭐ {{ show["rating"] }}/10</div>
+                {% endif %}
+            </div>
         </a>
-        — {{ show["status"] }}
-        {% if show["rating"] %}
-            — ⭐ {{ show["rating"] }}/10
-        {% endif %}
-    </li>
         {% endfor %}
-    </ul>
+    </div>
 {% else %}
     <p>Ainda não tens séries registadas.</p>
 {% endif %}

@@ -2,6 +2,17 @@
 
 {% block content %}
 <h2>{{ show["title"] }}</h2>
+{% if show["poster_url"] %}
+    <img class="detail-poster" src="{{ show['poster_url'] }}" alt="{{ show['title'] }}">
+{% endif %}
+
+{% if show["first_air_date"] %}
+    <p><strong>Estreia:</strong> {{ show["first_air_date"] }}</p>
+{% endif %}
+
+{% if show["overview"] %}
+    <p class="overview">{{ show["overview"] }}</p>
+{% endif %}
 
 <p><strong>Status:</strong> {{ show["status"] }}</p>
 

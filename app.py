@@ -1,3 +1,4 @@
+from tmdb import search_tv_show
 from flask import Flask, render_template, request, redirect, url_for
 from database import get_db, init_db
 
@@ -17,10 +18,28 @@ def add_series():
         status = request.form["status"]
         rating = request.form.get("rating") or None
 
+        tmdb_data = search_tv_show(title)
+
+        if tmdb_data:
+            title = tmdb_data["title"] or title
+            poster_url = tmdb_data["poster_url"]
+            tmdb_id = tmdb_data["tmdb_id"]
+            overview = tmdb_data["overview"]
+            first_air_date = tmdb_data["first_air_date"]
+        else:
+            poster_url = request.form.get("poster_url") or None
+            tmdb_id = None
+            overview = None
+            first_air_date = None
+
         db = get_db()
         db.execute(
-            "INSERT INTO series (title, status, rating) VALUES (?, ?, ?)",
-            (title, status, rating)
+            """
+            INSERT INTO series
+            (title, status, rating, poster_url, tmdb_id, overview, first_air_date)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """,
+            (title, status, rating, poster_url, tmdb_id, overview, first_air_date)
         )
         db.commit()
         db.close()
@@ -89,14 +108,15 @@ def edit_series(series_id):
         title = request.form["title"]
         status = request.form["status"]
         rating = request.form.get("rating") or None
+        poster_url = request.form.get("poster_url") or None
 
         db.execute(
             """
             UPDATE series
-            SET title = ?, status = ?, rating = ?
+            SET title = ?, status = ?, rating = ?, poster_url = ?
             WHERE id = ?
             """,
-            (title, status, rating, series_id)
+            (title, status, rating, poster_url, series_id)
         )
         db.commit()
         db.close()

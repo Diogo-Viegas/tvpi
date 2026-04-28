@@ -6,9 +6,12 @@ CREATE TABLE series (
     title TEXT NOT NULL,
     status TEXT NOT NULL DEFAULT 'quero ver',
     rating INTEGER,
+    poster_url TEXT,
+    tmdb_id INTEGER,
+    overview TEXT,
+    first_air_date TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 CREATE TABLE episodes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     series_id INTEGER NOT NULL,
