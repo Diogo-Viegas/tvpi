@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="/add">+ Adicionar série</a>
+
+<h2>As minhas séries</h2>
+
+{% if series %}
+    <ul>
+        {% for show in series %}
+    <li>
+        <a href="/series/{{ show['id'] }}">
+            <strong>{{ show["title"] }}</strong>
+        </a>
+        — {{ show["status"] }}
+        {% if show["rating"] %}
+            — ⭐ {{ show["rating"] }}/10
+        {% endif %}
+    </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Ainda não tens séries registadas.</p>
+{% endif %}
+{% endblock %}

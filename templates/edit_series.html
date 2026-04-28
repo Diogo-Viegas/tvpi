@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Editar série</h2>
+
+<form method="POST">
+    <label>Título</label>
+    <input type="text" name="title" value="{{ show['title'] }}" required>
+
+    <label>Status</label>
+    <select name="status">
+        <option value="quero ver" {% if show["status"] == "quero ver" %}selected{% endif %}>
+            Quero ver
+        </option>
+        <option value="a ver" {% if show["status"] == "a ver" %}selected{% endif %}>
+            A ver
+        </option>
+        <option value="terminado" {% if show["status"] == "terminado" %}selected{% endif %}>
+            Terminado
+        </option>
+    </select>
+
+    <label>Avaliação</label>
+    <input type="number" name="rating" min="1" max="10" value="{{ show['rating'] or '' }}">
+
+    <button type="submit">Guardar alterações</button>
+</form>
+
+<a href="/series/{{ show['id'] }}">Cancelar</a>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Adicionar série</h2>
+
+<form method="POST">
+    <label>Título</label>
+    <input type="text" name="title" required>
+
+    <label>Status</label>
+    <select name="status">
+        <option value="quero ver">Quero ver</option>
+        <option value="a ver">A ver</option>
+        <option value="terminado">Terminado</option>
+    </select>
+
+    <label>Avaliação</label>
+    <input type="number" name="rating" min="1" max="10">
+
+    <button type="submit">Guardar</button>
+</form>
+
+<a href="/">Voltar</a>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ show["title"] }}</h2>
+
+<p><strong>Status:</strong> {{ show["status"] }}</p>
+
+{% if show["rating"] %}
+    <p><strong>Avaliação:</strong> ⭐ {{ show["rating"] }}/10</p>
+{% else %}
+    <p><strong>Avaliação:</strong> Sem avaliação</p>
+{% endif %}
+
+<p>
+    <strong>Progresso:</strong>
+    {{ watched }}/{{ total }} episódios vistos — {{ progress }}%
+</p>
+
+<hr>
+
+<h3>Adicionar episódio</h3>
+
+<form method="POST" action="/series/{{ show['id'] }}/episodes/add">
+    <label>Temporada</label>
+    <input type="number" name="season" min="1" required>
+
+    <label>Episódio</label>
+    <input type="number" name="episode" min="1" required>
+
+    <label>Título do episódio</label>
+    <input type="text" name="title">
+
+    <button type="submit">Adicionar episódio</button>
+</form>
+
+<hr>
+
+<h3>Episódios</h3>
+
+{% if episodes %}
+    <ul>
+        {% for ep in episodes %}
+            <li>
+                {% if ep["watched"] %}
+                    ✅
+                {% else %}
+                    ⬜
+                {% endif %}
+
+                T{{ ep["season"] }}E{{ ep["episode"] }}
+
+                {% if ep["title"] %}
+                    — {{ ep["title"] }}
+                {% endif %}
+
+                <form method="POST" action="/episodes/{{ ep['id'] }}/toggle" style="display:inline;">
+                    <button type="submit">
+                        {% if ep["watched"] %}
+                            Marcar não visto
+                        {% else %}
+                            Marcar visto
+                        {% endif %}
+                    </button>
+                </form>
+
+                <form method="POST" action="/episodes/{{ ep['id'] }}/delete" style="display:inline;">
+                    <button type="submit">Apagar</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Ainda não tens episódios nesta série.</p>
+{% endif %}
+
+<hr>
+
+<a href="/series/{{ show['id'] }}/edit">Editar série</a>
+
+<form method="POST" action="/series/{{ show['id'] }}/delete">
+    <button type="submit">Apagar série</button>
+</form>
+
+<a href="/">Voltar</a>
+{% endblock %}
