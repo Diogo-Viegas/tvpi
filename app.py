@@ -6,10 +6,32 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
+    search = request.args.get("search", "")
+    status = request.args.get("status", "")
+
+    query = "SELECT * FROM series WHERE 1=1"
+    params = []
+
+    if search:
+        query += " AND title LIKE ?"
+        params.append(f"%{search}%")
+
+    if status:
+        query += " AND status = ?"
+        params.append(status)
+
+    query += " ORDER BY created_at DESC"
+
     db = get_db()
-    series = db.execute("SELECT * FROM series ORDER BY created_at DESC").fetchall()
+    series = db.execute(query, params).fetchall()
     db.close()
-    return render_template("index.html", series=series)
+
+    return render_template(
+        "index.html",
+        series=series,
+        search=search,
+        status=status
+    )
 
 @app.route("/add", methods=["GET", "POST"])
 def add_series():

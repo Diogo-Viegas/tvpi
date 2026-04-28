@@ -2,7 +2,30 @@
 
 {% block content %}
 <a class="btn" href="/add">+ Adicionar série</a>
+<form method="GET" class="filters">
+    <input
+        type="text"
+        name="search"
+        placeholder="Pesquisar série..."
+        value="{{ search }}"
+    >
 
+    <select name="status">
+        <option value="">Todos</option>
+        <option value="quero ver" {% if status == "quero ver" %}selected{% endif %}>
+            Quero ver
+        </option>
+        <option value="a ver" {% if status == "a ver" %}selected{% endif %}>
+            A ver
+        </option>
+        <option value="terminado" {% if status == "terminado" %}selected{% endif %}>
+            Terminado
+        </option>
+    </select>
+
+    <button type="submit">Filtrar</button>
+    <a class="btn secondary" href="/">Limpar</a>
+</form>
 <h2>As minhas séries</h2>
 
 {% if series %}
