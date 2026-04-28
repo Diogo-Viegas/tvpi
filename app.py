@@ -1,6 +1,7 @@
 from tmdb import search_tv_show
 from flask import Flask, render_template, request, redirect, url_for
 from database import get_db, init_db
+from tmdb import get_season_episodes
 
 app = Flask(__name__)
 
@@ -97,11 +98,16 @@ def series_detail(series_id):
         ORDER BY season ASC, episode ASC
         """,
         (series_id,)
-    ).fetchall()
-
+        ).fetchall()
     total = len(episodes)
     watched = sum(1 for ep in episodes if ep["watched"])
     progress = int((watched / total) * 100) if total > 0 else 0
+
+    next_episode = None
+    for ep in episodes:
+        if not ep["watched"]:
+            next_episode = ep
+            break
 
     db.close()
 
@@ -111,7 +117,8 @@ def series_detail(series_id):
         episodes=episodes,
         total=total,
         watched=watched,
-        progress=progress
+        progress=progress,
+        next_episode=next_episode
     )
 
 @app.route("/series/<int:series_id>/edit", methods=["GET", "POST"])
@@ -237,5 +244,40 @@ def delete_episode(episode_id):
     db.close()
 
     return redirect(url_for("series_detail", series_id=series_id))   
+
+@app.route("/series/<int:series_id>/import-season", methods=["POST"])
+def import_season(series_id):
+    season_number = int(request.form["season"])
+
+    db = get_db()
+
+    show = db.execute(
+        "SELECT * FROM series WHERE id = ?",
+        (series_id,)
+    ).fetchone()
+
+    if not show or not show["tmdb_id"]:
+        db.close()
+        return "Série sem ligação TMDB", 400
+
+    episodes = get_season_episodes(show["tmdb_id"], season_number)
+
+    for ep in episodes:
+        db.execute(
+            """
+            INSERT OR IGNORE INTO episodes (series_id, season, episode, title)
+            VALUES (?, ?, ?, ?)
+            """,
+            (series_id, ep["season"], ep["episode"], ep["title"])
+        )
+
+    db.commit()
+    db.close()
+
+    return redirect(url_for("series_detail", series_id=series_id))
+
+
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

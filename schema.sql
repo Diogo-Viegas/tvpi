@@ -20,5 +20,6 @@ CREATE TABLE episodes (
     title TEXT,
     watched INTEGER NOT NULL DEFAULT 0,
     watched_at TIMESTAMP,
-    FOREIGN KEY(series_id) REFERENCES series(id)
+    FOREIGN KEY(series_id) REFERENCES series(id),
+    UNIQUE(series_id, season, episode)
 );

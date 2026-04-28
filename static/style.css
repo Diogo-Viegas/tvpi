@@ -165,3 +165,10 @@ input, select {
         grid-template-columns: 1fr;
     }
 }
+.next-episode {
+    background: #181818;
+    border-left: 4px solid #e50914;
+    padding: 16px;
+    border-radius: 10px;
+    margin: 20px 0;
+}

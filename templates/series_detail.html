@@ -26,22 +26,31 @@
     <strong>Progresso:</strong>
     {{ watched }}/{{ total }} episódios vistos — {{ progress }}%
 </p>
-
+{% if next_episode %}
+    <div class="next-episode">
+        <h3>Próximo episódio</h3>
+        <p>
+            T{{ next_episode["season"] }}E{{ next_episode["episode"] }}
+            {% if next_episode["title"] %}
+                — {{ next_episode["title"] }}
+            {% endif %}
+        </p>
+    </div>
+{% elif total > 0 %}
+    <div class="next-episode">
+        <h3>🎉 Série em dia!</h3>
+        <p>Todos os episódios registados foram vistos.</p>
+    </div>
+{% endif %}
 <hr>
 
-<h3>Adicionar episódio</h3>
+<h3>Importar temporada</h3>
 
-<form method="POST" action="/series/{{ show['id'] }}/episodes/add">
-    <label>Temporada</label>
+<form method="POST" action="/series/{{ show['id'] }}/import-season">
+    <label>Número da temporada</label>
     <input type="number" name="season" min="1" required>
 
-    <label>Episódio</label>
-    <input type="number" name="episode" min="1" required>
-
-    <label>Título do episódio</label>
-    <input type="text" name="title">
-
-    <button type="submit">Adicionar episódio</button>
+    <button type="submit">Importar episódios</button>
 </form>
 
 <hr>
@@ -67,16 +76,16 @@
                 <form method="POST" action="/episodes/{{ ep['id'] }}/toggle" style="display:inline;">
                     <button type="submit">
                         {% if ep["watched"] %}
-                            Marcar não visto
+                            ❌
                         {% else %}
-                            Marcar visto
+                            👁️
                         {% endif %}
                     </button>
                 </form>
-
+<!-- 
                 <form method="POST" action="/episodes/{{ ep['id'] }}/delete" style="display:inline;">
                     <button type="submit">Apagar</button>
-                </form>
+                </form> -->
             </li>
         {% endfor %}
     </ul>

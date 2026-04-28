@@ -47,3 +47,33 @@ def search_tv_show(query):
         "poster_url": poster_url,
         "first_air_date": show.get("first_air_date")
     }
+    
+def get_season_episodes(tmdb_id, season_number):
+    url = f"{TMDB_BASE_URL}/tv/{tmdb_id}/season/{season_number}"
+
+    headers = {
+        "Authorization": f"Bearer {TMDB_TOKEN}",
+        "accept": "application/json"
+    }
+
+    params = {
+        "language": "pt-PT"
+    }
+
+    response = requests.get(url, headers=headers, params=params, timeout=5)
+    response.raise_for_status()
+
+    data = response.json()
+
+    episodes = data.get("episodes", [])
+
+    result = []
+
+    for ep in episodes:
+        result.append({
+            "season": season_number,
+            "episode": ep.get("episode_number"),
+            "title": ep.get("name")
+        })
+
+    return result
