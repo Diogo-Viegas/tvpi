@@ -2,6 +2,27 @@
 
 {% block content %}
 <a class="btn" href="/add">+ Adicionar série</a>
+<section class="dashboard">
+    <div class="stat-card">
+        <span>Total de séries</span>
+        <strong>{{ stats["total_series"] }}</strong>
+    </div>
+
+    <div class="stat-card">
+        <span>Favoritas</span>
+        <strong>{{ stats["favorite_series"] }}</strong>
+    </div>
+
+    <div class="stat-card">
+        <span>Episódios vistos</span>
+        <strong>{{ stats["watched_episodes"] }}</strong>
+    </div>
+
+    <div class="stat-card">
+        <span>Terminadas</span>
+        <strong>{{ stats["completed_series"] }}</strong>
+    </div>
+</section>
 <form method="GET" class="filters">
     <input
         type="text"

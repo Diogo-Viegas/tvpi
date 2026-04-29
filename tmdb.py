@@ -77,3 +77,19 @@ def get_season_episodes(tmdb_id, season_number):
         })
 
     return result
+import time
+
+def get_tv_details(tmdb_id):
+    url = f"{TMDB_BASE_URL}/tv/{tmdb_id}"
+
+    headers = {
+        "Authorization": f"Bearer {TMDB_TOKEN}",
+        "accept": "application/json"
+    }
+
+    params = {"language": "pt-PT"}
+
+    response = requests.get(url, headers=headers, params=params, timeout=5)
+    response.raise_for_status()
+
+    return response.json()

@@ -64,7 +64,11 @@
 
     <button type="submit">Importar episódios</button>
 </form>
-
+<form method="POST" action="/series/{{ show['id'] }}/import-all-seasons">
+    <button type="submit" class="btn secondary">
+        Importar todas as temporadas
+    </button>
+</form>
 <hr>
 
 <h3>Episódios</h3>

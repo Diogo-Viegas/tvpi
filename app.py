@@ -1,7 +1,10 @@
+import json
+from tmdb import get_tv_details
 from tmdb import search_tv_show
 from flask import Flask, render_template, request, redirect, url_for
 from database import get_db, init_db
 from tmdb import get_season_episodes
+from flask import Response
 
 app = Flask(__name__)
 
@@ -33,13 +36,24 @@ def index():
 
     db = get_db()
     series = db.execute(query, params).fetchall()
+    stats = db.execute(
+    """
+    SELECT
+        (SELECT COUNT(*) FROM series) AS total_series,
+        (SELECT COUNT(*) FROM series WHERE favorite = 1) AS favorite_series,
+        (SELECT COUNT(*) FROM episodes) AS total_episodes,
+        (SELECT COUNT(*) FROM episodes WHERE watched = 1) AS watched_episodes,
+        (SELECT COUNT(*) FROM series WHERE status = 'terminado') AS completed_series
+    """
+    ).fetchone()
     db.close()
 
     return render_template(
         "index.html",
         series=series,
         search=search,
-        status=status
+        status=status,
+        stats=stats
     )
 
 @app.route("/add", methods=["GET", "POST"])
@@ -368,6 +382,64 @@ def toggle_favorite(series_id):
     db.close()
 
     return redirect(url_for("series_detail", series_id=series_id))
-    
+@app.route("/export")
+def export_data():
+    db = get_db()
+
+    series = db.execute("SELECT * FROM series").fetchall()
+    episodes = db.execute("SELECT * FROM episodes").fetchall()
+
+    db.close()
+
+    data = {
+        "series": [dict(s) for s in series],
+        "episodes": [dict(e) for e in episodes]
+    }
+
+    json_data = json.dumps(data, indent=2)
+
+    return Response(
+        json_data,
+        mimetype="application/json",
+        headers={"Content-Disposition": "attachment;filename=tvpi_backup.json"}
+    )
+@app.route("/series/<int:series_id>/import-all-seasons", methods=["POST"])
+def import_all_seasons(series_id):
+    db = get_db()
+
+    show = db.execute(
+        "SELECT * FROM series WHERE id = ?",
+        (series_id,)
+    ).fetchone()
+
+    if not show or not show["tmdb_id"]:
+        db.close()
+        return "Série sem ligação TMDB", 400
+
+    details = get_tv_details(show["tmdb_id"])
+    seasons = details.get("seasons", [])
+
+    for season in seasons:
+        season_number = season.get("season_number")
+
+        if season_number == 0:
+            continue
+
+        episodes = get_season_episodes(show["tmdb_id"], season_number)
+
+        for ep in episodes:
+            db.execute(
+                """
+                INSERT OR IGNORE INTO episodes (series_id, season, episode, title)
+                VALUES (?, ?, ?, ?)
+                """,
+                (series_id, ep["season"], ep["episode"], ep["title"])
+            )
+
+    db.commit()
+    db.close()
+
+    return redirect(url_for("series_detail", series_id=series_id))
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

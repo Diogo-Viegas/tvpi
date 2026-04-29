@@ -182,3 +182,27 @@ input, select {
     height: 8px;
     margin: 6px 0 0;
 }
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    margin: 24px 0;
+}
+
+.stat-card {
+    background: #181818;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.stat-card span {
+    display: block;
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.stat-card strong {
+    font-size: 26px;
+    color: #fff;
+}
