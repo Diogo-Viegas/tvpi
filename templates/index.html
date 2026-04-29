@@ -40,6 +40,9 @@
 
             <div class="card-content">
                 <h3>{{ show["title"] }}</h3>
+                {% if show["favorite"] %}
+                    <span class="favorite-star">★</span>
+                {% endif %}
                 <span class="badge">{{ show["status"] }}</span>
 
                 {% if show["rating"] %}

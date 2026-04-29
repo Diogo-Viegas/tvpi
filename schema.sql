@@ -10,6 +10,7 @@ CREATE TABLE series (
     tmdb_id INTEGER,
     overview TEXT,
     first_air_date TEXT,
+    favorite INTEGER NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE episodes (

@@ -344,6 +344,30 @@ def history():
 
     return render_template("history.html", episodes=episodes)
 
+@app.route("/series/<int:series_id>/favorite", methods=["POST"])
+def toggle_favorite(series_id):
+    db = get_db()
 
+    show = db.execute(
+        "SELECT favorite FROM series WHERE id = ?",
+        (series_id,)
+    ).fetchone()
+
+    if show is None:
+        db.close()
+        return "Série não encontrada", 404
+
+    new_value = 0 if show["favorite"] else 1
+
+    db.execute(
+        "UPDATE series SET favorite = ? WHERE id = ?",
+        (new_value, series_id)
+    )
+
+    db.commit()
+    db.close()
+
+    return redirect(url_for("series_detail", series_id=series_id))
+    
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

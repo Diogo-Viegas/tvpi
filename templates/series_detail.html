@@ -5,7 +5,15 @@
 {% if show["poster_url"] %}
     <img class="detail-poster" src="{{ show['poster_url'] }}" alt="{{ show['title'] }}">
 {% endif %}
-
+<form method="POST" action="/series/{{ show['id'] }}/favorite">
+    <button type="submit" class="btn secondary">
+        {% if show["favorite"] %}
+            ★ Remover dos favoritos
+        {% else %}
+            ☆ Adicionar aos favoritos
+        {% endif %}
+    </button>
+</form>
 {% if show["first_air_date"] %}
     <p><strong>Estreia:</strong> {{ show["first_air_date"] }}</p>
 {% endif %}
