@@ -10,7 +10,15 @@ def index():
     search = request.args.get("search", "")
     status = request.args.get("status", "")
 
-    query = "SELECT * FROM series WHERE 1=1"
+    query = """
+            SELECT
+                series.*,
+                COUNT(episodes.id) AS total_episodes,
+                SUM(CASE WHEN episodes.watched = 1 THEN 1 ELSE 0 END) AS watched_episodes
+            FROM series
+            LEFT JOIN episodes ON episodes.series_id = series.id
+            WHERE 1=1
+    """
     params = []
 
     if search:
@@ -21,7 +29,7 @@ def index():
         query += " AND status = ?"
         params.append(status)
 
-    query += " ORDER BY created_at DESC"
+    query += " GROUP BY series.id ORDER BY series.created_at DESC"
 
     db = get_db()
     series = db.execute(query, params).fetchall()

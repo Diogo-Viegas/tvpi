@@ -35,6 +35,10 @@
                 — {{ next_episode["title"] }}
             {% endif %}
         </p>
+
+        <form method="POST" action="/episodes/{{ next_episode['id'] }}/toggle">
+            <button type="submit">Marcar como visto</button>
+        </form>
     </div>
 {% elif total > 0 %}
     <div class="next-episode">

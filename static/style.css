@@ -172,3 +172,13 @@ input, select {
     border-radius: 10px;
     margin: 20px 0;
 }
+.card-progress-text {
+    font-size: 13px;
+    color: #aaa;
+    margin-top: 12px;
+}
+
+.progress-wrap.small {
+    height: 8px;
+    margin: 6px 0 0;
+}

@@ -45,6 +45,19 @@
                 {% if show["rating"] %}
                     <div class="rating">⭐ {{ show["rating"] }}/10</div>
                 {% endif %}
+                {% set total = show["total_episodes"] or 0 %}
+                {% set watched = show["watched_episodes"] or 0 %}
+                {% set progress = ((watched / total) * 100) | int if total > 0 else 0 %}
+
+                {% if total > 0 %}
+                    <div class="card-progress-text">
+                        {{ watched }}/{{ total }} episódios
+                    </div>
+
+                    <div class="progress-wrap small">
+                        <div class="progress-bar" style="width: {{ progress }}%;"></div>
+                    </div>
+                {% endif %}
             </div>
         </a>
         {% endfor %}
