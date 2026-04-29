@@ -284,7 +284,65 @@ def import_season(series_id):
 
     return redirect(url_for("series_detail", series_id=series_id))
 
+@app.route("/continue")
+def continue_watching():
+    db = get_db()
 
+    shows = db.execute(
+        """
+        SELECT
+            series.id,
+            series.title,
+            series.poster_url,
+            episodes.id AS episode_id,
+            episodes.season,
+            episodes.episode,
+            episodes.title AS episode_title
+        FROM series
+        JOIN episodes ON episodes.series_id = series.id
+        WHERE episodes.watched = 0
+        AND episodes.id = (
+            SELECT e2.id
+            FROM episodes e2
+            WHERE e2.series_id = series.id
+            AND e2.watched = 0
+            ORDER BY e2.season ASC, e2.episode ASC
+            LIMIT 1
+        )
+        ORDER BY series.title ASC
+        """
+    ).fetchall()
+
+    db.close()
+
+    return render_template("continue.html", shows=shows)
+
+
+@app.route("/history")
+def history():
+    db = get_db()
+
+    episodes = db.execute(
+        """
+        SELECT
+            series.id AS series_id,
+            series.title AS series_title,
+            series.poster_url,
+            episodes.season,
+            episodes.episode,
+            episodes.title AS episode_title,
+            episodes.watched_at
+        FROM episodes
+        JOIN series ON series.id = episodes.series_id
+        WHERE episodes.watched = 1
+        ORDER BY episodes.watched_at DESC
+        LIMIT 50
+        """
+    ).fetchall()
+
+    db.close()
+
+    return render_template("history.html", episodes=episodes)
 
 
 if __name__ == "__main__":

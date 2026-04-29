@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a class="btn secondary" href="/">Voltar</a>
+
+<h2>Histórico</h2>
+
+{% if episodes %}
+    <div class="episode-list">
+        {% for ep in episodes %}
+            <a class="episode-row" href="/series/{{ ep['series_id'] }}">
+                {% if ep["poster_url"] %}
+                    <img src="{{ ep['poster_url'] }}" alt="{{ ep['series_title'] }}">
+                {% else %}
+                    <div class="mini-placeholder">📺</div>
+                {% endif %}
+
+                <div>
+                    <strong>{{ ep["series_title"] }}</strong>
+                    <p>
+                        T{{ ep["season"] }}E{{ ep["episode"] }}
+                        {% if ep["episode_title"] %}
+                            — {{ ep["episode_title"] }}
+                        {% endif %}
+                    </p>
+                    <small>{{ ep["watched_at"] }}</small>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>Ainda não tens episódios vistos.</p>
+{% endif %}
+{% endblock %}
