@@ -328,6 +328,7 @@ hr {
     .poster-placeholder {
         height: 220px;
     }
+}
 .seasons {
     display: grid;
     gap: 16px;
@@ -474,13 +475,13 @@ hr {
     .season-progress {
         text-align: left;
     }
+}
 .episode-row-clean {
     display: grid;
-    grid-template-columns: 60px 1fr 160px;
-    gap: 14px;
+    grid-template-columns: 52px 1fr 84px;
+    gap: 12px;
     align-items: center;
-    padding: 14px 12px;
-    border-radius: 12px;
+    padding: 12px 10px;
 }
 
 .episode-row-clean:hover {
@@ -520,9 +521,8 @@ hr {
 
 .episode-actions-clean {
     display: flex;
-    align-items: center;
     justify-content: flex-end;
-    gap: 8px;
+    gap: 6px;
 }
 
 .episode-actions-clean form {
@@ -556,20 +556,97 @@ hr {
     background: #7f1d1d;
 }
 
-@media (max-width: 700px) {
-    .episode-row-clean {
-        grid-template-columns: 48px 1fr;
-    }
-
-    .episode-actions-clean {
-        grid-column: 1 / -1;
-        justify-content: flex-start;
-        padding-left: 62px;
-    }
-
-    .episode-btn {
-        width: 120px;
-    }
+.round-action {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-radius: 50%;
+    background: #262626;
+    color: #fff;
+    font-size: 16px;
+    line-height: 1;
 }
 
+.round-action:hover {
+    background: var(--red);
+    transform: none;
+}
+
+.danger-light {
+    color: #ff9b9b;
+}
+
+.danger-light:hover {
+    background: #7f1d1d;
+}
+
+@media (max-width: 700px) {
+    .episode-row-clean {
+        grid-template-columns: 44px 1fr 76px;
+    }
+
+    .episode-info strong {
+        white-space: normal;
+    }
+}
+.episodes-section {
+    max-width: 720px;
+    margin: 0 auto;
+}
+.detail-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+}
+
+.detail-actions form {
+    margin: 0;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .15s ease, transform .1s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn.secondary {
+    background: #262626;
+    color: #fff;
+}
+
+.btn.secondary:hover {
+    background: #333;
+}
+
+.btn.danger {
+    background: #7f1d1d;
+    color: #fff;
+}
+
+.btn.danger:hover {
+    background: #b91c1c;
+}
+
+.btn.ghost {
+    background: transparent;
+    border: 1px solid #333;
+    color: #aaa;
+}
+
+.btn.ghost:hover {
+    background: #1f1f1f;
+    color: #fff;
 }

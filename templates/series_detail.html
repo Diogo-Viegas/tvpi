@@ -57,18 +57,19 @@
 <hr>
 
 <h3>Importar temporada</h3>
-
+<div class="detail-actions"></div>
 <form method="POST" action="/series/{{ show['id'] }}/import-season">
     <label>Número da temporada</label>
     <input type="number" name="season" min="1" required>
 
-    <button type="submit">Importar episódios</button>
+    <button type="submit" class="btn secondary">Importar episódios</button>
 </form>
 <form method="POST" action="/series/{{ show['id'] }}/import-all-seasons">
-    <button type="submit" class="btn secondary">
+    <button type="submit" class="btn danger">
         Importar todas as temporadas
     </button>
 </form>
+</div>
 <hr>
 
 <h3>Episódios</h3>
@@ -117,21 +118,17 @@
                                 <small>Por ver</small>
                             {% endif %}
                         </div>
-                    <div class="episode-actions-clean">
-                        <form method="POST" action="/episodes/{{ ep['id'] }}/toggle">
-                            <button type="submit" class="episode-btn {% if ep['watched'] %}watched-btn{% endif %}">
-                                {% if ep["watched"] %}
-                                    Visto
-                                {% else %}
-                                    Marcar visto
-                                {% endif %}
-                            </button>
-                        </form>
+               <div class="episode-actions-clean">
+                    <form method="POST" action="/episodes/{{ ep['id'] }}/toggle">
+                        <button type="submit" class="round-action">
+                            {% if ep["watched"] %}↺{% else %}✓{% endif %}
+                        </button>
+                    </form>
 
-                        <form method="POST" action="/episodes/{{ ep['id'] }}/delete">
-                            <button type="submit" class="delete-btn">×</button>
-                        </form>
-                    </div>
+                    <form method="POST" action="/episodes/{{ ep['id'] }}/delete">
+                        <button type="submit" class="round-action danger-light">×</button>
+                    </form>
+                </div>
                     </div>
                 {% endfor %}
             </div>
@@ -143,11 +140,19 @@
 {% endif %}
 <hr>
 
-<a href="/series/{{ show['id'] }}/edit">Editar série</a>
+<div class="detail-actions">
+    <a href="/series/{{ show['id'] }}/edit" class="btn secondary">
+        ✏️ Editar
+    </a>
 
-<form method="POST" action="/series/{{ show['id'] }}/delete">
-    <button type="submit">Apagar série</button>
-</form>
+    <form method="POST" action="/series/{{ show['id'] }}/delete">
+        <button type="submit" class="btn danger">
+            🗑 Apagar
+        </button>
+    </form>
 
-<a href="/">Voltar</a>
+    <a href="/" class="btn ghost">
+        ← Voltar
+    </a>
+</div>
 {% endblock %}
