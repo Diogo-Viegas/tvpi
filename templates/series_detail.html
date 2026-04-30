@@ -73,42 +73,74 @@
 
 <h3>Episódios</h3>
 
-{% if episodes %}
-    <ul>
-        {% for ep in episodes %}
-            <li>
-                {% if ep["watched"] %}
-                    ✅
-                {% else %}
-                    ⬜
-                {% endif %}
+{% if seasons %}
+<div class="seasons">
+    {% for season, season_episodes in seasons.items() %}
+        {% set season_total = season_episodes|length %}
+        {% set season_watched = season_episodes|selectattr("watched")|list|length %}
+        {% set season_progress = ((season_watched / season_total) * 100)|int %}
 
-                T{{ ep["season"] }}E{{ ep["episode"] }}
+        <details class="season-block" {% if loop.first %}open{% endif %}>
+            <summary>
+                <div>
+                    <strong>Temporada {{ season }}</strong>
+                    <small>{{ season_watched }}/{{ season_total }} vistos</small>
+                </div>
 
-                {% if ep["title"] %}
-                    — {{ ep["title"] }}
-                {% endif %}
+                <div class="season-progress">
+                    <span>{{ season_progress }}%</span>
+                    <div class="progress-wrap tiny">
+                        <div class="progress-bar" style="width: {{ season_progress }}%;"></div>
+                    </div>
+                </div>
+            </summary>
 
-                <form method="POST" action="/episodes/{{ ep['id'] }}/toggle" style="display:inline;">
-                    <button type="submit">
-                        {% if ep["watched"] %}
-                            ❌
-                        {% else %}
-                            👁️
-                        {% endif %}
-                    </button>
-                </form>
-<!-- 
-                <form method="POST" action="/episodes/{{ ep['id'] }}/delete" style="display:inline;">
-                    <button type="submit">Apagar</button>
-                </form> -->
-            </li>
-        {% endfor %}
-    </ul>
+            <div class="episode-table">
+                {% for ep in season_episodes %}
+                    <div class="episode-row-clean {% if ep['watched'] %}is-watched{% endif %}">
+                        <div class="episode-number">
+                            E{{ "%02d"|format(ep["episode"]) }}
+                        </div>
+
+                        <div class="episode-info">
+                            <strong>
+                                {% if ep["title"] %}
+                                    {{ ep["title"] }}
+                                {% else %}
+                                    Episódio {{ ep["episode"] }}
+                                {% endif %}
+                            </strong>
+
+                            {% if ep["watched"] and ep["watched_at"] %}
+                                <small>Visto em {{ ep["watched_at"] }}</small>
+                            {% else %}
+                                <small>Por ver</small>
+                            {% endif %}
+                        </div>
+                    <div class="episode-actions-clean">
+                        <form method="POST" action="/episodes/{{ ep['id'] }}/toggle">
+                            <button type="submit" class="episode-btn {% if ep['watched'] %}watched-btn{% endif %}">
+                                {% if ep["watched"] %}
+                                    Visto
+                                {% else %}
+                                    Marcar visto
+                                {% endif %}
+                            </button>
+                        </form>
+
+                        <form method="POST" action="/episodes/{{ ep['id'] }}/delete">
+                            <button type="submit" class="delete-btn">×</button>
+                        </form>
+                    </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </details>
+    {% endfor %}
+</div>
 {% else %}
     <p>Ainda não tens episódios nesta série.</p>
 {% endif %}
-
 <hr>
 
 <a href="/series/{{ show['id'] }}/edit">Editar série</a>

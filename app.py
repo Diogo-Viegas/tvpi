@@ -130,7 +130,13 @@ def series_detail(series_id):
         if not ep["watched"]:
             next_episode = ep
             break
+    seasons = {}
 
+    for ep in episodes:
+        season = ep["season"]
+        if season not in seasons:
+            seasons[season] = []
+        seasons[season].append(ep)
     db.close()
 
     return render_template(
@@ -140,7 +146,8 @@ def series_detail(series_id):
         total=total,
         watched=watched,
         progress=progress,
-        next_episode=next_episode
+        next_episode=next_episode,
+        seasons=seasons
     )
 
 @app.route("/series/<int:series_id>/edit", methods=["GET", "POST"])

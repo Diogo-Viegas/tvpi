@@ -1,27 +1,47 @@
+:root {
+    --bg: #070707;
+    --panel: #141414;
+    --panel-2: #1f1f1f;
+    --text: #f5f5f5;
+    --muted: #a3a3a3;
+    --red: #e50914;
+    --red-dark: #b00610;
+    --yellow: #facc15;
+}
+
 * {
     box-sizing: border-box;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: #0b0b0f;
-    color: #f5f5f5;
     margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at top left, #1a1a1a 0, transparent 35%),
+        linear-gradient(180deg, #111 0%, var(--bg) 260px);
+    color: var(--text);
 }
 
 main {
-    max-width: 1100px;
+    max-width: 1180px;
     margin: auto;
-    padding: 24px;
+    padding: 28px;
 }
 
 h1 {
-    color: #e50914;
-    font-size: 42px;
+    color: var(--red);
+    font-size: 46px;
+    margin: 0 0 14px;
+    letter-spacing: -1px;
 }
 
-h2, h3 {
-    margin-top: 24px;
+h2 {
+    font-size: 30px;
+    margin-top: 34px;
+}
+
+h3 {
+    margin: 0 0 10px;
 }
 
 a {
@@ -29,61 +49,168 @@ a {
     text-decoration: none;
 }
 
-.btn, button {
-    background: #e50914;
+.nav {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.nav a,
+.btn,
+button {
+    background: var(--panel-2);
     color: white;
     border: none;
-    border-radius: 6px;
-    padding: 10px 14px;
+    border-radius: 999px;
+    padding: 11px 16px;
+    font-weight: 700;
     cursor: pointer;
-    font-weight: bold;
+    transition: transform .15s ease, background .15s ease;
 }
 
-.btn.secondary {
-    background: #333;
+.nav a:hover,
+.btn:hover,
+button:hover {
+    background: var(--red);
+    transform: translateY(-1px);
 }
 
-input, select {
+.btn,
+button {
+    background: var(--red);
+}
+
+.btn.secondary,
+button.secondary {
+    background: var(--panel-2);
+}
+
+.danger {
+    background: #7f1d1d;
+}
+
+input,
+select {
     width: 100%;
-    padding: 12px;
+    padding: 13px 14px;
     margin: 8px 0 18px;
-    border-radius: 6px;
+    border-radius: 10px;
     border: 1px solid #333;
-    background: #181818;
+    background: #101010;
     color: white;
+    font-size: 15px;
+}
+
+input:focus,
+select:focus {
+    outline: 2px solid var(--red);
+    border-color: var(--red);
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 14px;
+    margin: 26px 0;
+}
+
+.stat-card {
+    background: linear-gradient(145deg, #191919, #101010);
+    border: 1px solid #252525;
+    border-radius: 18px;
+    padding: 18px;
+}
+
+.stat-card span {
+    display: block;
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.stat-card strong {
+    font-size: 30px;
+}
+
+.filters {
+    display: grid;
+    grid-template-columns: 1fr 180px auto auto;
+    gap: 12px;
+    align-items: center;
+    margin: 26px 0;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+    gap: 20px;
 }
 
 .card {
-    background: #181818;
-    border-radius: 12px;
-    padding: 18px;
-    min-height: 140px;
-    transition: transform 0.15s ease, background 0.15s ease;
+    background: var(--panel);
+    border-radius: 18px;
+    overflow: hidden;
+    min-height: 180px;
+    border: 1px solid #222;
+    box-shadow: 0 12px 30px rgba(0,0,0,.25);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
 
 .card:hover {
-    transform: scale(1.03);
-    background: #242424;
+    transform: scale(1.035);
+    border-color: #444;
+    box-shadow: 0 18px 45px rgba(0,0,0,.45);
+}
+
+.poster-card {
+    padding: 0;
+}
+
+.poster-card img,
+.poster-placeholder {
+    width: 100%;
+    height: 275px;
+    object-fit: cover;
+    display: block;
+}
+
+.poster-placeholder {
+    background: linear-gradient(145deg, #222, #111);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 62px;
+}
+
+.card-content {
+    padding: 15px;
 }
 
 .badge {
     display: inline-block;
-    background: #333;
-    padding: 5px 8px;
+    background: #2b2b2b;
+    color: #ddd;
+    padding: 6px 10px;
     border-radius: 999px;
     font-size: 13px;
-    margin-top: 8px;
+}
+
+.favorite-star {
+    color: var(--yellow);
+    font-size: 22px;
 }
 
 .rating {
-    color: #facc15;
+    color: var(--yellow);
     margin-top: 10px;
+}
+
+.card-progress-text,
+.muted {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 12px;
 }
 
 .progress-wrap {
@@ -94,115 +221,355 @@ input, select {
     margin: 10px 0 20px;
 }
 
+.progress-wrap.small {
+    height: 8px;
+    margin: 7px 0 0;
+}
+
 .progress-bar {
-    background: #e50914;
+    background: linear-gradient(90deg, var(--red), #ff4b55);
     height: 100%;
 }
 
+.detail-poster {
+    width: 240px;
+    max-width: 100%;
+    border-radius: 18px;
+    margin: 18px 0;
+    box-shadow: 0 20px 50px rgba(0,0,0,.5);
+}
+
+.overview {
+    max-width: 760px;
+    line-height: 1.7;
+    color: #d4d4d4;
+}
+
+.next-episode,
+.episode,
+.episode-row {
+    background: rgba(24,24,24,.95);
+    border: 1px solid #252525;
+    border-radius: 16px;
+}
+
+.next-episode {
+    border-left: 5px solid var(--red);
+    padding: 18px;
+    margin: 22px 0;
+}
+
 .episode {
-    background: #181818;
     margin: 10px 0;
-    padding: 12px;
-    border-radius: 8px;
+    padding: 14px;
 }
 
 .inline-form {
     display: inline;
 }
 
-.danger {
-    background: #7f1d1d;
+.episode-list {
+    display: grid;
+    gap: 12px;
 }
 
-.poster-card {
-    padding: 0;
-    overflow: hidden;
-    min-height: 300px;
+.episode-row {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 12px;
 }
 
-.poster-card img {
-    width: 100%;
-    height: 260px;
+.episode-row:hover {
+    background: #242424;
+}
+
+.episode-row img,
+.mini-placeholder {
+    width: 58px;
+    height: 86px;
+    border-radius: 8px;
     object-fit: cover;
-    display: block;
+    flex-shrink: 0;
 }
 
-.poster-placeholder {
-    height: 260px;
+.mini-placeholder {
     background: #222;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 64px;
 }
 
-.card-content {
-    padding: 14px;
-}
-.detail-poster {
-    width: 220px;
-    max-width: 100%;
-    border-radius: 12px;
-    margin: 16px 0;
-}
-
-.overview {
-    max-width: 700px;
-    line-height: 1.6;
-    color: #d4d4d4;
-}
-
-.filters {
-    display: grid;
-    grid-template-columns: 1fr 180px auto auto;
-    gap: 12px;
-    align-items: center;
-    margin: 24px 0;
+hr {
+    border: none;
+    border-top: 1px solid #252525;
+    margin: 28px 0;
 }
 
 @media (max-width: 700px) {
+    main {
+        padding: 18px;
+    }
+
+    h1 {
+        font-size: 38px;
+    }
+
     .filters {
         grid-template-columns: 1fr;
     }
-}
-.next-episode {
-    background: #181818;
-    border-left: 4px solid #e50914;
-    padding: 16px;
-    border-radius: 10px;
-    margin: 20px 0;
-}
-.card-progress-text {
-    font-size: 13px;
-    color: #aaa;
-    margin-top: 12px;
-}
 
-.progress-wrap.small {
-    height: 8px;
-    margin: 6px 0 0;
-}
-.dashboard {
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+        gap: 14px;
+    }
+
+    .poster-card img,
+    .poster-placeholder {
+        height: 220px;
+    }
+.seasons {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+}
+
+.season-block {
+    background: rgba(20, 20, 20, 0.92);
+    border: 1px solid #272727;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.season-block summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 18px;
+    display: grid;
+    grid-template-columns: 1fr 170px;
+    gap: 18px;
+    align-items: center;
+    background: linear-gradient(145deg, #202020, #111);
+}
+
+.season-block summary::-webkit-details-marker {
+    display: none;
+}
+
+.season-block summary::before {
+    content: "▸";
+    color: var(--red);
+    font-size: 18px;
+    margin-right: 8px;
+}
+
+.season-block[open] summary::before {
+    content: "▾";
+}
+
+.season-block summary {
+    position: relative;
+}
+
+.season-block summary > div:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.season-block summary strong {
+    font-size: 18px;
+}
+
+.season-block summary small {
+    color: var(--muted);
+}
+
+.season-progress {
+    display: grid;
+    gap: 6px;
+    text-align: right;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.progress-wrap.tiny {
+    height: 6px;
+    margin: 0;
+}
+
+.episode-table {
+    display: grid;
+    padding: 8px;
+}
+
+.episode-row-clean {
+    display: grid;
+    grid-template-columns: 58px 1fr auto;
     gap: 14px;
-    margin: 24px 0;
-}
-
-.stat-card {
-    background: #181818;
+    align-items: center;
+    padding: 13px 10px;
     border-radius: 12px;
-    padding: 16px;
+    transition: background .15s ease;
 }
 
-.stat-card span {
+.episode-row-clean:hover {
+    background: #202020;
+}
+
+.episode-row-clean + .episode-row-clean {
+    border-top: 1px solid #242424;
+}
+
+.episode-row-clean.is-watched {
+    opacity: .72;
+}
+
+.episode-number {
+    color: var(--red);
+    font-weight: 800;
+    font-size: 15px;
+    text-align: center;
+}
+
+.episode-info {
+    min-width: 0;
+}
+
+.episode-info strong {
     display: block;
-    color: #aaa;
-    font-size: 14px;
-    margin-bottom: 8px;
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.stat-card strong {
-    font-size: 26px;
-    color: #fff;
+.episode-info small {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.episode-actions-clean {
+    display: flex;
+    gap: 8px;
+}
+
+.episode-actions-clean form {
+    margin: 0;
+}
+
+.episode-actions-clean button {
+    padding: 8px 11px;
+    font-size: 13px;
+}
+
+.icon-danger:hover {
+    background: #7f1d1d;
+}
+
+@media (max-width: 700px) {
+    .season-block summary {
+        grid-template-columns: 1fr;
+    }
+
+    .season-progress {
+        text-align: left;
+    }
+.episode-row-clean {
+    display: grid;
+    grid-template-columns: 60px 1fr 160px;
+    gap: 14px;
+    align-items: center;
+    padding: 14px 12px;
+    border-radius: 12px;
+}
+
+.episode-row-clean:hover {
+    background: #202020;
+}
+
+.episode-row-clean + .episode-row-clean {
+    border-top: 1px solid #242424;
+}
+
+.episode-row-clean.is-watched {
+    opacity: 0.65;
+}
+
+.episode-number {
+    color: var(--red);
+    font-weight: 800;
+    text-align: center;
+}
+
+.episode-info {
+    min-width: 0;
+}
+
+.episode-info strong {
+    display: block;
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.episode-info small {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.episode-actions-clean {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.episode-actions-clean form {
+    margin: 0;
+}
+
+.episode-btn {
+    width: 110px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    background: var(--red);
+}
+
+.watched-btn {
+    background: #333;
+    color: #aaa;
+}
+
+.delete-btn {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-radius: 8px;
+    font-size: 20px;
+    background: #2a1111;
+    color: #ffb4b4;
+}
+
+.delete-btn:hover {
+    background: #7f1d1d;
+}
+
+@media (max-width: 700px) {
+    .episode-row-clean {
+        grid-template-columns: 48px 1fr;
+    }
+
+    .episode-actions-clean {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+        padding-left: 62px;
+    }
+
+    .episode-btn {
+        width: 120px;
+    }
+}
+
 }
